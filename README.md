@@ -4,7 +4,8 @@ A set of implementations of fundamental computer science data structures and alg
 
 ## Requirements
 - Compile for g++
-- No std libs
+- Header only
+- Use minimal std libs
 - No external libs
 - Malloc memory management
 - Always `int` data
