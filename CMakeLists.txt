@@ -28,6 +28,6 @@ message(STATUS "INCLUDE_DIRS: " ${INCLUDE_DIRS})
 message(STATUS "PRIVATE_INCLUDE_DIRS: " ${PRIVATE_INCLUDE_DIRS})
 message(STATUS "SRC_FILES: ${SRC_FILES}")
 
-add_executable(cpp_101 STATIC ${SRC_FILES})
+add_executable(cpp_101 ${SRC_FILES})
 target_include_directories(cpp_101 PUBLIC ${INCLUDE_DIRS})
 target_include_directories(cpp_101 PRIVATE ${PRIVATE_INCLUDE_DIRS})

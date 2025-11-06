@@ -1,4 +1,6 @@
 # Custom
+.vscode/
+build/
 
 # Prerequisites
 *.d
