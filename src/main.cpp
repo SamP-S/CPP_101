@@ -22,45 +22,32 @@ void testIndexed(std::string _name, IIndexed<int>* _indexed) {
    	std::cout << "END TEST: " << _name << std::endl << std::endl;
 }
 
-void testQueue() {
-    std::cout << "START TEST: QUEUE" << std::endl;
-    Queue<int> queue(5);
-    std::cout << "queue = " << queue.toString() << std::endl;
-    for (int i = 0; i < 12; i++) {
-        queue.push(i);
-        std::cout << "queue = " << queue.toString() << std::endl;
-    }
-    for (int i = 0; i < 5; i++) {
-        queue.pop();
-        std::cout << "queue = " << queue.toString() << std::endl;
-    }
-    std::cout << "END TEST: QUEUE" << std::endl << std::endl;
-}
-
-void testStack() {
-    std::cout << "START TEST: STACK" << std::endl;
-    Stack<int> stack(5);
-    std::cout << "stack = " << stack.toString() << std::endl;
-    for (int i = 0; i < 12; i++) {
-        stack.push(i);
-        std::cout << "stack = " << stack.toString() << std::endl;
-    }
-    for (int i = 0; i < 5; i++) {
-        stack.pop();
-        std::cout << "stack = " << stack.toString() << std::endl;
-    }
-    std::cout << "END TEST: STACK" << std::endl << std::endl;
+void testOrdered(std::string _name, IOrdered<int>* _ordered) {
+	std::cout << "START TEST: " << _name << std::endl;
+	std::cout << _name << " = " << _ordered->toString() << std::endl;
+	for (int i = 0; i < 12; i++) {
+		_ordered->push(i);
+		std::cout << _name << " = " << _ordered->toString() << std::endl;
+	}
+	for (int i = 0; i < 5; i++) {
+		_ordered->pop();
+		std::cout << _name << " = " << _ordered->toString() << std::endl;
+	}
+	std::cout << "END TEST: " << _name << std::endl;
 }
 
 int main() {
-	// fixed sized array
-	Array<int, 8>* array = new Array<int, 8>();
-    testIndexed("array", array);
-    // dynamically sized array
-	List<int>* list = new List<int>(3);
-	testIndexed("list", list);
+	// // fixed sized array
+	// Array<int, 8>* array = new Array<int, 8>();
+    // testIndexed("array", array);
+    // // dynamically sized array
+	// List<int>* list = new List<int>(3);
+	// testIndexed("list", list);
+	
 	// fifo queue
-	//testQueue();
+	Queue<int>* queue = new Queue<int>(4);
+	testOrdered("queue", queue);
 	// filo stack
-    //testStack();
+    // Stack<int>* stack = new Stack<int>(4);
+	// testOrdered("stack", stack);
 }

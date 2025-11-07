@@ -6,13 +6,14 @@
 #include <sstream>
 // internal
 #include "global.hpp"
+#include "i_ordered.hpp"
 
 /*
     Data Structure: Queue
 */
 
 template<typename T>
-class Queue {
+class Queue : public IOrdered<T> {
 private:
     T* m_pData = nullptr;
     size_t m_front;
@@ -38,17 +39,17 @@ public:
     }
 
     // get number of elements in queue
-    size_t size() {
+    size_t size() override {
         return m_numElems;
     }
 
     // check if queue is empty
-    bool empty() {
+    bool empty() override {
         return m_numElems == 0;
     }
 
     // push element to back of queue
-    void push(T _elem) {
+    void push(T _elem) override {
         if (m_numElems == m_size) {
             if (m_size == SIZE_MAX) {
                 throw std::length_error("Queue: can't push elements beyond SIZE_MAX");
@@ -63,7 +64,7 @@ public:
     }
 
     // pop element from front of list and return it
-    T pop() {
+    T pop() override {
         if (m_numElems == 0) {
             throw std::range_error("Queue: no elements in queue");
         }
@@ -74,7 +75,7 @@ public:
     }
 
     // get a reference to front element
-    T& front() {
+    T& front() override {
         if (m_numElems == 0) {
             throw std::range_error("Queue: no elements in queue");
         }
@@ -82,14 +83,14 @@ public:
     }
 
     // get a reference to back element
-    T& back() {
+    T& back() override {
         if (m_numElems == 0) {
             throw std::range_error("Queue: no elements in queue");
         }
         return m_pData[m_back];
     }
 
-    std::string toString() {
+    std::string toString() override  {
         std::stringstream ss;
         ss << "{ size=" << m_size << "; ";
         for (size_t i = 0; i < m_numElems; i++) {
