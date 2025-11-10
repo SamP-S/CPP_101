@@ -4,31 +4,39 @@
 #include <exception>
 #include <cstring>
 #include <sstream>
+#include <cassert>
 //internal
-#include "global.hpp"
-#include "i_data_structure.hpp"
+#include "common/global.hpp"
+#include "sequence/i_sequence.hpp"
 
 /*
-    Data Structure: Dynamically Sized List
+    Data Structure: Dynamically Sized Array
 */
-
+	
 template<typename T>
-class List : public IDataStructure<T> {
+class DynamicArray : public ISequence<T> {
 private: 
     T* m_pData;
     size_t m_size;
 	size_t m_end;
 
+	// O(n): resize data structure
+	void resize(size_t _n) {
+		size_t newSize = nearestBase2(_n);
+		memresize<T>(&m_pData, m_size, newSize);
+		m_size = newSize;
+	}
+
 public:
     // O(n): constructor, allow manual init alloc size
-    List(size_t _alloc = 4) {
+    DynamicArray(size_t _alloc = 4) {
 		m_size = nearestBase2(_alloc);
 		m_pData = memalloc<T>(m_size);
 		m_end = 0;
 	}
 
     // O(1): destructor
-    ~List() {
+    ~DynamicArray() {
 		memfree<T>(m_pData);
 	}
 
@@ -39,7 +47,7 @@ public:
 
 	// O(1): get allocated memory size of list
 	size_t allocated() override {
-		return m_size;
+		return m_size * sizeof(T) + sizeof(DynamicArray);
 	}
 
 	// O(1): check if used list is empty
@@ -47,23 +55,19 @@ public:
 		return m_end == 0;
 	}
 
-	// O(n): resize data structure
-	void resize(size_t _n) override {
-		size_t newSize = nearestBase2(_n);
-		memresize<T>(&m_pData, m_size, newSize);
-		m_size = newSize;
-	}
+	// O(1): remove all elements from array
+    void clear() override {
+		assert(m_pData != nullptr && "Can't clear unallocated memory");
+        memfree<T>(m_pData);
+		m_pData = memalloc<T>(m_size);
+		m_end = 0;
+    }
 
     // O(n): fill all elements with value
     void fill(T _value) override {
         for (size_t i = 0; i < m_end; i++) {
             m_pData[i] = _value;
         }
-    }
-    
-    // O(n): set all values to default "0"
-    void clear() override {
-        this->fill(T());
     }
     
     // O(1): overload index operator
@@ -74,25 +78,6 @@ public:
         return m_pData[_index];
     }
 
-	// O(1)/O(n): push back
-	void push(T _elem) override {
-		if (m_end >= m_size) {
-			this->resize(m_size << 1);
-		}
-		m_pData[m_end] = _elem;
-		m_end++;
-	}
-
-	// O(1): pop back
-	T pop() override {
-		if (m_end == 0) {
-			throw std::range_error("Can't pop from list of size 0");
-		}
-		T ret = m_pData[m_end - 1];
-		m_end--;
-		return ret;
-	}
-
 	// O(n): push front
 	void push_front(T _elem) override {
 		this->insert(0, _elem);
@@ -101,6 +86,25 @@ public:
 	// O(n): pop front
 	T pop_front() override {
 		return this->remove(0);
+	}
+
+	// Amortized O(1): push back
+	void push_back(T _elem) override {
+		if (m_end >= m_size) {
+			this->resize(m_size << 1);
+		}
+		m_pData[m_end] = _elem;
+		m_end++;
+	}
+
+	// O(1): pop back
+	T pop_back() override {
+		if (m_end == 0) {
+			throw std::range_error("Can't pop from list of size 0");
+		}
+		T ret = m_pData[m_end - 1];
+		m_end--;
+		return ret;
 	}
 
 	// O(n): insert element at index
