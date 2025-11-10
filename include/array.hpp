@@ -4,26 +4,38 @@
 #include <exception>
 #include <cstring>
 #include <sstream>
+// internal
+#include "common/i_data_structure.hpp"
 
 /*
     Data Structure: Statically Sized Array
 */
 
 template<typename T, size_t SIZE>
-class Array {
+class Array : public IDataStructure {
 private: 
     T m_data[SIZE] = {};
 
 public:
-    // constructor
+    // constructor/destructor
     Array() = default;
-
-    // destructor
     ~Array() = default;
 
     // get fixed size of array
-    size_t size() {
+    size_t size() override {
         return SIZE;
+    }
+
+	// get allocated memory size of array
+	size_t allocated() override {
+		return SIZE * sizeof(T);
+	}
+
+	// reset to 0s
+    void clear() {
+        for (size_t i = 0; i < SIZE; i++) {
+			m_data[i] = T();
+		}
     }
 
     // fill all elements with value
@@ -31,11 +43,6 @@ public:
         for (size_t i = 0; i < SIZE; i++) {
             m_data[i] = _value;
         }
-    }
-    
-    // set all values to default "0"
-    void clear() {
-        this->fill(T());
     }
     
     // overload index operator
@@ -47,7 +54,7 @@ public:
     }
 
     // convert array to string
-    std::string toString() {
+    std::string toString() override {
         std::stringstream ss;
         ss << "{ size=" << SIZE << "; "; 
 		ss << m_data[0];
