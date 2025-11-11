@@ -7,7 +7,9 @@
 #include "sequence/dynamic_array.hpp"
 #include "sequence/circular_array.hpp"
 #include "sequence/linked_list.hpp"
+#include "sequence/circular_linked_list.hpp"
 #include "sequence/doubly_linked_list.hpp"
+#include "sequence/circular_doubly_linked_list.hpp"
 
 #define TEST_ARRAY 			false
 #define TEST_ARRAY_SIZE 	16
@@ -35,8 +37,8 @@ void testArray(std::string _name, Array<int, TEST_ARRAY_SIZE>* _array) {
     std::cout << _name << " = " << _array->toString() << std::endl;
     for (int i = 0; i < TEST_ARRAY_RANGE; i++) {
 		(*_array)[i] = TEST_ARRAY_RANGE - i - 1;
-		std::cout << _name << " = " << _array->toString() << std::endl;
 	}
+	std::cout << _name << " = " << _array->toString() << std::endl;
    	std::cout << "END TEST: " << _name << std::endl << std::endl;
 }
 
@@ -45,12 +47,12 @@ void testSequence(std::string _name, ISequence<int>* _seq) {
     printSeq("init", _seq);
     for (int i = 0; i < TEST_PUSHES; i++) {
 		_seq->push_back(TEST_PUSHES - i - 1);
-		printSeq("push-back\t", _seq);
 	}
+	printSeq("push-back\t", _seq);
 	for (int i = 0; i < TEST_POPS; i++) {
 		_seq->pop_back();
-		printSeq("pop-back\t", _seq);
 	}
+	printSeq("pop-back\t", _seq);
 	_seq->push_front(99);
 	printSeq("push-front\t", _seq);
 	_seq->pop_front();
@@ -84,8 +86,12 @@ int main() {
 		testSequence("dynamic-array", dynArr);
 		LinkedList<int>* ll = new LinkedList<int>();
 		testSequence("linked-list", ll);
+		CircularLinkedList<int>* cll = new CircularLinkedList<int>();
+		testSequence("circular-linked-list", cll);
 		DoublyLinkedList<int>* dll = new DoublyLinkedList<int>();
 		testSequence("doubly-linked-list", dll);
+		CircularDoublyLinkedList<int>* cdll = new CircularDoublyLinkedList<int>();
+		testSequence("circular-doubly-linked-list", cdll);
 	}	
 
 	// if (TEST_ORDERED) {

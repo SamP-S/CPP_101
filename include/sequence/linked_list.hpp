@@ -154,14 +154,14 @@ public:
 
 	// O(n): insert element at index
 	void insert(size_t _index, T _elem) override {
-		// clamp index to end of list
-		if (_index >= m_size) {
-			this->push_back(_elem);
-			return;
-		}
 		// push front if index 0
 		if (_index == 0) {
 			this->push_front(_elem);
+			return;
+		}
+		// push back if index >= size
+		if (_index >= m_size) {
+			this->push_back(_elem);
 			return;
 		}
 		// find node at index
@@ -181,13 +181,13 @@ public:
 
 	// O(n): remove element at index
 	T remove(size_t _index) override {
-		// remove from end if index >= size
-		if (_index >= m_size) {
-			return this->pop_back();
-		}
 		// pop front if index 0
 		if (_index == 0) {
 			return this->pop_front();
+		}
+		// remove from end if index >= size
+		if (_index >= m_size) {
+			return this->pop_back();
 		}
 		// find node at index
 		LinkedNode* pNodeBefore = m_pFirst;
