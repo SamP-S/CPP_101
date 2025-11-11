@@ -5,7 +5,7 @@
 #include "array.hpp"
 #include "sequence/i_sequence.hpp"
 #include "sequence/dynamic_array.hpp"
-#include "sequence/circular_array.hpp"
+#include "sequence/circular_dynamic_array.hpp"
 #include "sequence/linked_list.hpp"
 #include "sequence/circular_linked_list.hpp"
 #include "sequence/doubly_linked_list.hpp"
@@ -16,7 +16,6 @@
 #define TEST_ARRAY_RANGE 	12
 
 #define TEST_SEQUENCE	true
-#define TEST_INIT		0
 #define TEST_PUSHES 	7
 #define TEST_POPS		3
 
@@ -82,8 +81,9 @@ int main() {
 
 	// dynamically sized array
 	if (TEST_SEQUENCE) {
-		DynamicArray<int>* dynArr = new DynamicArray<int>(TEST_INIT);
-		testSequence("dynamic-array", dynArr);
+		DynamicArray<int>* da = new DynamicArray<int>();
+		testSequence("dynamic-array", da);
+		CircularDynamicArray<int>* cda = new CircularDynamicArray<int>();
 		LinkedList<int>* ll = new LinkedList<int>();
 		testSequence("linked-list", ll);
 		CircularLinkedList<int>* cll = new CircularLinkedList<int>();

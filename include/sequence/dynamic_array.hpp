@@ -29,8 +29,8 @@ private:
 
 public:
     // O(n): constructor, allow manual init alloc size
-    DynamicArray(size_t _alloc = 4) {
-		m_allocated = nearestBase2(_alloc);
+    DynamicArray() {
+		m_allocated = nearestBase2(0);
 		m_pData = memalloc<T>(m_allocated);
 		m_size = 0; 
 	}
