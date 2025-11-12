@@ -11,13 +11,6 @@
 // merge 3 3 4 5 12
 
 template<typename T>
-void swap(T* _pArr, size_t _a, size_t _b) {
-	T tmp = _pArr[_a];
-	_pArr[_a] = _pArr[_b];
-	_pArr[_b] = tmp;
-}
-
-template<typename T>
 void merge_sort_impl(T* _pArr, size_t _left, size_t _mid, size_t _right) {
 	size_t leftSize = _mid - _left + 1;
 	size_t rightSize = _right - _mid;

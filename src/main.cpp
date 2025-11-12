@@ -14,6 +14,7 @@
 #include "sequence/doubly_linked_list.hpp"
 #include "sequence/circular_doubly_linked_list.hpp"
 #include "sorting/merge_sort.hpp"
+#include "sorting/bubble_sort.hpp"
 
 #define TEST_ARRAY 			false
 #define TEST_ARRAY_SIZE 	16
@@ -51,6 +52,15 @@ T* genRandArray(size_t _size) {
 	T* pArr = memalloc<T>(_size);
 	for (size_t i = 0; i < _size; i++) {
 		pArr[i] = (int)(rand() % TEST_SORT_MAX);
+	}
+	return pArr;
+}
+
+template<typename T>
+T* genRevArray(size_t _size) {
+	T* pArr = memalloc<T>(_size);
+	for (size_t i = 0; i < _size; i++) {
+		pArr[i] = _size - i - 1;
 	}
 	return pArr;
 }
@@ -132,18 +142,34 @@ int main() {
 
 	if (TEST_SORT) {
 		std::pair<std::string, void(*)(int*, size_t)> sortAlg[] = {
-			{"merge-sort", merge_sort<int>}
+			{"merge-sort", merge_sort<int>},
+			{"bubble-sort", bubble_sort<int>},
+			{"bubble-sort-fast", bubble_sort_fast<int>}
 		};
 		size_t sortAlgSize = sizeof(sortAlg) / sizeof(sortAlg[0]);
 		size_t size = TEST_SORT_SIZE;
 		for (size_t i = 0; i < sortAlgSize; i++) {
+			// get algorithm
 			std::string name = sortAlg[i].first;
 			void(*alg)(int*, size_t) = sortAlg[i].second;
-			int* pArr = genRandArray<int>(size);
-			printArray<int>(name + "-before\t", pArr, size);
+			int* pArr = nullptr;
+			std::cout << "BEGIN TEST: " << name << std::endl;
+			
+			// sort random array
+			pArr = genRandArray<int>(size);
+			printArray<int>("rand-before\t", pArr, size);
 			alg(pArr, size);
-			printArray<int>(name + "-after\t", pArr, size);
+			printArray<int>("rand-after\t", pArr, size);
 			memfree<int>(pArr);
+			
+			// sort reverse order array
+			pArr = genRevArray<int>(size);
+			printArray<int>("rev-before\t", pArr, size);
+			alg(pArr, size);
+			printArray<int>("rev-after\t", pArr, size);
+			memfree<int>(pArr);
+
+			std::cout << "END TEST: " << name << std::endl;
 		}
 	}
 }

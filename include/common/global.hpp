@@ -14,6 +14,14 @@ struct Pair {
 	T second;
 };
 
+// swap elements at index _a <---> _b, no bound checks
+template<typename T>
+void swap(T* _pArr, size_t _a, size_t _b) {
+	T tmp = _pArr[_a];
+	_pArr[_a] = _pArr[_b];
+	_pArr[_b] = tmp;
+}
+
 // allocate memory
 template<typename T>
 T* memalloc(size_t _size) {
